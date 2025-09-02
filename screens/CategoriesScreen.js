@@ -3,16 +3,27 @@ import { CATEGORIES } from "../data/dummy-data";
 import { FlatList } from "react-native";
 import CategoryGridTile from "../components/CategoryGritTile";
 
-function renderCategoryItem({ item }) {
+
+// ナビゲーションを使用するために、外側にあったrenderCategoryItemを内部に移動させた
+function CategoriesScreen({ navigation}) {
+
+  function renderCategoryItem({ item }) {
+    function pressHandler() {
+      // 第二引数にパラメータをオブジェクト形式で渡せる
+      navigation.navigate("MealsOverview", {
+        categoryId: item.id
+      });
+    }
+
     return (
         <CategoryGridTile
             title={item.title}
             color={item.color}
+            onPress={pressHandler}
         />
     );
-}
+  }
 
-function CategoriesScreen() {
   return (
     <FlatList
         data={CATEGORIES}
