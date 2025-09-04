@@ -1,19 +1,43 @@
 import { View, Text, StyleSheet } from "react-native";
+import MealsList from "../components/MealList/MealsList";
+import { useContext } from "react";
+import { FavoriteContext } from "../store/context/favorite-context"; //export defaultではなく、普通にexportされているやつなので{}で囲む
+import { MEALS } from "../data/dummy-data";
 
 function FavoriteScreen() {
+
+    const favoriteMealsContext = useContext(FavoriteContext);
+
+    // 前MealデータからfavoriteMealsContextで管理されているidsのみが残るようにフィルタをかける。
+    // これによりid以外のその他情報まで含んだデータリストができる
+    const favoriteMeals = MEALS.filter((meal) => favoriteMealsContext.ids.includes(meal.id));
+
+    if(favoriteMeals.length === 0 ) {
+        return (
+            <View style={styles.roootContainer}>
+                <Text style={styles.text}>You have no favorite meals yet. Start adding some!</Text>
+            </View>
+        );
+    }
+
     return (
-        <View style={styles.container}>
-            <Text>Meal Detail Screen</Text>
-        </View>
+        <MealsList items={favoriteMeals} />
     );
 }
 
 export default FavoriteScreen;
 
 const styles = StyleSheet.create({
-    container: {
+    roootContainer: {
         flex: 1,
-        padding: 16,
-        backgroundColor: '#3f2f25',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 32,
+    },
+    text: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: 'white',
+        textAlign: 'center',
     }
 });

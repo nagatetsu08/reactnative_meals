@@ -1,20 +1,29 @@
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
-import { useLayoutEffect } from 'react';
+import { useContext, useLayoutEffect } from 'react';
 
 import { MEALS } from "../data/dummy-data";
 import MealDetails from "../components/MealDetails";
 import SubTitle from "../components/MealDetail/SubTitle";
 import List from "../components/MealDetail/List";
 import IconButton from "../components/IconButton";
+import { FavoriteContext } from '../store/context/favorite-context';
 
 function MealDetailScreen({route, navigation}) {
+
+    const favoriteMealsContext = useContext(FavoriteContext);
 
     const mealId = route.params.mealId;
 
     const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
-    function headerButtonPressHandler() {
-        console.log("Pressed!");
+    const mealIsFavorite = favoriteMealsContext.ids.includes(mealId);
+
+    function changeFavoriteStatusHandler() {
+        if (mealIsFavorite) {
+            favoriteMealsContext.removeFavorite(mealId);
+        } else {
+            favoriteMealsContext.addFavorite(mealId);
+        }
     }
 
     useLayoutEffect(() => {
@@ -22,14 +31,14 @@ function MealDetailScreen({route, navigation}) {
             headerRight: () => {
                 return (
                     <IconButton
-                        icon="star"
-                        onPress={headerButtonPressHandler}
+                        icon={mealIsFavorite ? 'star' : 'star-outline'} //staro-outlineは星の枠だけのアイコン
+                        onPress={changeFavoriteStatusHandler    }
                         color="white"
                     />
                 );
             }
         });
-    }, [navigation, headerButtonPressHandler])
+    }, [navigation, changeFavoriteStatusHandler]) //依存配列に関数を入れると、この関数が実行されるたびに実行される
 
     return (
         <ScrollView style={styles.rootContainer}>

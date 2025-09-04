@@ -1,7 +1,6 @@
-import { View, Text, StyleSheet, FlatList } from "react-native";
 import { MEALS, CATEGORIES } from "../data/dummy-data";
-import MealItem from "../components/MealItem";
 import { useLayoutEffect } from "react";
+import MealsList from "../components/MealList/MealsList";
 
 
 function MealsOverviewScreen({ route, navigation }) {
@@ -32,37 +31,8 @@ function MealsOverviewScreen({ route, navigation }) {
         })
     }, [categoryId, navigation])
 
-    function renderMealItem({ item }) {
-        const mealItemProps = {
-            id: item.id,
-            title: item.title,
-            imageUrl: item.imageUrl,
-            duration: item.duration,
-            complexity: item.complexity,
-            affordability: item.affordability
-        };
-        return (
-            // ポイントは展開先のコンポーネントのprops定義に合わせてオブジェクトを展開して渡すこと
-            <MealItem {...mealItemProps} />
-        );
-    }
-
-    return (
-        <View style={styles.container}>
-            <FlatList
-                data={displayedMeals}
-                renderItem={renderMealItem}
-                keyExtractor={(item) => item.id}
-            />
-        </View>
-    );
+    return <MealsList items={displayedMeals}/>
 }
 
 export default MealsOverviewScreen;
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-    }
-})
