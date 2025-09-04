@@ -10,8 +10,7 @@ import MealDetailScreen from './screens/MealDetailScreen';
 import FavoriteScreen from './screens/FavoriteScreen';  
 
 import {Ionicons} from '@expo/vector-icons'
-import { Provider } from 'react-redux';
-import { store } from './store/redux/store';
+import FavoriteContextProvider from './store/context/favorite-context';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -58,7 +57,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style='light'/>
-      <Provider store={store}>
+      <FavoriteContextProvider>
         <NavigationContainer >
           <Stack.Navigator 
             // 全画面共通のデフォルトスタイルを定義可能（上書きしたい場合は個々のスクリーン定義に書く）
@@ -95,7 +94,7 @@ export default function App() {
             />
           </Stack.Navigator>
         </NavigationContainer>
-      </Provider>
+      </FavoriteContextProvider>
     </View>
   );
 }

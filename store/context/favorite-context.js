@@ -5,7 +5,7 @@ import { createContext, useState } from "react";
 export const FavoriteContext = createContext({
     ids: [],
     addFavorite: (id) => {},
-    removeFavorite: (id) => {}
+    removeFavorite: (id) => {}  
 });
 
 
@@ -15,14 +15,17 @@ function FavoriteContextProvider({ children }) {
 
     const [favoriteMealIds, setFavoriteMealIds] = useState([]);
 
+    // reduxではreducerになる
     function addFavorite(id) {
         setFavoriteMealIds((currentFavoriteIds) => [...currentFavoriteIds, id]);
     }
 
+    // reduxではreducerになる
     function removeFavorite(id) {
         setFavoriteMealIds((currentFavoriteIds) => currentFavoriteIds.filter(mealId => mealId !== id));
     }
 
+    // ここでFavoriteContextの初期化の値を作成し、下のProviderのvalueに渡すことでContextがcreateされて使えるようになる
     const value = {
         ids: favoriteMealIds,
         addFavorite: addFavorite,
